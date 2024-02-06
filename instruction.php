@@ -66,4 +66,9 @@
 <?php include_once('about.html'); ?>
 </body>
 
+
+<!-- on peut ajouter les fichiers à inclure dans un repertoire securisé 
+on peut aussi restreindre l'accès à ces fichiers et de les valider correctement -->
 </html>
+
+

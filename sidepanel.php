@@ -26,3 +26,8 @@
     <a href="/xvwa/vulnerabilities/redirect/" class="list-group-item">Redirects & Forwards</a>
     <a href="/xvwa/vulnerabilities/ssti/" class="list-group-item">Server Side Template Injection</a>
 </div>
+
+<!-- je preconise pour ameliorer la securité d'utiliser des jetons CRSF, de limiter les privileges, 
+d'implementer une gestion des erreurs sécurisée pour éviter de divulguer des informations sensibles en cas d'erreurs,
+d'implementer des mécanismes d'authentification et de contrôle d'accès pour restreindre l'accès aux utilisateurs légitimes,
+et d'echapper les données. -->

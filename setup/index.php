@@ -32,7 +32,7 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <?php include("../header.php") ?>
+        <?php include($_SERVER['DOCUMENT_ROOT'] . "/header.php") ?>
         <!-- /.container -->
     </nav>
 
@@ -42,7 +42,7 @@
         <div class="row">
 
             <div class="col-md-3">
-                <?php include("../sidepanel.php") ?>
+                <?php include($_SERVER['DOCUMENT_ROOT'] . "/sidepanel.php") ?>
              </div>
 
             <div class="col-md-9">
@@ -59,7 +59,7 @@
     </div>
     <!-- /.container -->
 
-    <?php include("../footer.html") ?>
+    <?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.html") ?>
     <!-- /.container -->
 
     <!-- jQuery -->
@@ -69,5 +69,10 @@
     <script src="../js/bootstrap.min.js"></script>
 
 </body>
-
+<!-- ameliorations apportées -->
+<!-- il faut noté qu'il faut s'assurer de securiser l'insertion des fichers
+via "include()" pour eviter toute inclusion arbitraire et dangereuse.
+de plus le chemin de ces fichers a une reference relative, l'attaquant pourrait acceder a des fichiers en exploitant 
+ces chemins relatifs si il est capable de manipuler les paramatres URL -->
+<!-- j'ai modifier le chemin en ajoutant $_SERVER['DOCUMENT_ROOT'] pour obtenir le chemin racine du serveur -->
 </html>
