@@ -1,4 +1,8 @@
- <div class="thumbnail">
+<?php
+// Démarre la session PHP
+session_start();
+?>
+<div class="thumbnail">
     <!--
         <img class="img-responsive" src="http://placehold.it/800x300" alt="">
     -->

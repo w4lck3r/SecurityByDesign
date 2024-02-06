@@ -33,17 +33,32 @@ jection">https://www.owasp.org/index.php/PHP_Object_Injection</a></p></strong>
                                     }
                                 }
                             }
-                            if(isset($_REQUEST['r'])){  
+                            // if(isset($_REQUEST['r'])){  
 
-                                $var1=unserialize($_REQUEST['r']);
+                            //     $var1=unserialize($_REQUEST['r']);
                                 
 
-                                if(is_array($var1)){ 
+                            //     if(is_array($var1)){ 
+                            //         echo "<br/>".$var1[0]." - ".$var1[1];
+                            //     }
+
+                            if(isset($_REQUEST['r'])){  
+                                $var1 = unserialize($_REQUEST['r']);
+                                // Vérifie si $var1 est un tableau avant de l'utiliser
+                                if(is_array($var1) && count($var1) == 2){ 
                                     echo "<br/>".$var1[0]." - ".$var1[1];
+                                } else {
+                                    // Gérer le cas où la désérialisation n'a pas réussi ou si le format des données est incorrect
+                                    echo "Invalid data format";
                                 }
+                                
                             }else{
                                 echo ""; # nothing happens here
                             }
+
+                            // Dans cette correction, je recommande d'ajouter une validation supplémentaire pour vérifier 
+                            // si l'entrée désérialisée est un tableau (ou l'objet attendu) avant de l'utiliser.
+                            //  Cela peut aider à prévenir les attaques d'injection d'objet PHP.
                         ?>
          </div>
      </div>

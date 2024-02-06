@@ -16,10 +16,23 @@ try {
   
   // initialize Twig environment
   $twig = new Twig_Environment($loader);
- // set template variables
- // render template
-$result= $twig->render($name);
-echo "Hello $result";
+
+  
+//  // set template variables
+//  // render template
+// $result= $twig->render($name);
+// echo "Hello $result";
+
+   // escape user input
+   $name = $twig->escape($name);
+        
+   // set template variables
+   // render template
+   $result = $twig->render("Hello {{ name }}", array('name' => $name));
+   echo $result;
+
+   // j'ai echapper les données utilisateur avant de les afficher,
+   // ce qui empêche toute exécution de code malveillant.
   
 } catch (Exception $e) {
   die ('ERROR: ' . $e->getMessage());

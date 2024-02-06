@@ -35,6 +35,13 @@
                             }else{
                                 $sql = 'select itemid from caffaine';
                                 $result = $conn->query($sql);
+
+                                // Utilisez une requête préparée avec un paramètre pour éviter les injections SQL
+                                $sql = 'SELECT itemid FROM caffaine';
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
                                 while($rows = $result->fetch_assoc()) {
                                     echo "<option value=\"".$rows['itemid']."\">".$rows['itemid']."</option>";
                                 }
@@ -55,10 +62,26 @@
                             }else if($item){
                                 $sql = "select * from caffaine where itemid = ".$item;
                                 $result = $conn->query($sql);
+
+                                // Utilisez une requête préparée avec un paramètre pour éviter les injections SQL
+                                $sql = "SELECT * FROM caffaine WHERE itemid = ?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("s", $item);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
                                 $isSearch = true;
                             }else if($search){
                                 $sql = "SELECT * FROM caffaine WHERE itemname LIKE '%" . $search . "%' OR itemdesc LIKE '%" . $search . "%' OR categ LIKE '%" . $search . "%'";
                                 $result = $conn->query($sql);
+                                // Utilisez une requête préparée avec des paramètres pour éviter les injections SQL
+                                $sql = "SELECT * FROM caffaine WHERE itemname LIKE ? OR itemdesc LIKE ? OR categ LIKE ?";
+                                $stmt = $conn->prepare($sql);
+                                $searchParam = "%$search%";
+                                $stmt->bind_param("sss", $searchParam, $searchParam, $searchParam);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
                                 $isSearch = true;
                             }
                             if($isSearch){

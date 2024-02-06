@@ -31,8 +31,15 @@
                             if($conn->connect_errno > 0){
                                 echo "Error in connecting to database";
                             }else{ 
-                                $sql = 'select itemid from caffaine';
-                                $result = $conn->query($sql);
+                                // $sql = 'select itemid from caffaine';
+                                // $result = $conn->query($sql);
+
+                                // Remplacez la requête SQL par une requête préparée pour éviter les injections SQL
+                                $sql = 'SELECT itemid FROM caffaine';
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
                                 while($rows = $result->fetch_assoc()){
                                     echo "<option value=\"".$rows['itemid']."\">".$rows['itemid']."</option>";
                                 }
@@ -51,15 +58,32 @@
                                 echo "<li class=\"cross\">Error! Can not use both search and itemcode option. Search using either of these optoins.</li>";
                                 echo "</ul>";
                             }else if($item){
-                                $sql = "select * from caffaine where itemid = ".$item;
-                                $result = $conn->query($sql);
+                                // $sql = "select * from caffaine where itemid = ".$item;
+                                // $result = $conn->query($sql);
+                                // Utilisez une requête préparée avec un paramètre pour éviter les injections SQL
+                                $sql = "SELECT * FROM caffaine WHERE itemid = ?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("s", $item);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
+                              
+
                                 $rowcount = $result->num_rows;
                                 if($rowcount>0){
                                     $isSearch = true;
                                 }
                             }else if($search){
-                                $sql = "SELECT * FROM caffaine WHERE itemname LIKE '%" . $search . "%' OR itemdesc LIKE '%" . $search . "%' OR categ LIKE '%" . $search . "%'";
-                                $result = $conn->query($sql);
+                                // $sql = "SELECT * FROM caffaine WHERE itemname LIKE '%" . $search . "%' OR itemdesc LIKE '%" . $search . "%' OR categ LIKE '%" . $search . "%'";
+                                // $result = $conn->query($sql);
+                                // Utilisez une requête préparée avec des paramètres pour éviter les injections SQL
+                                $sql = "SELECT * FROM caffaine WHERE itemname LIKE ? OR itemdesc LIKE ? OR categ LIKE ?";
+                                $stmt = $conn->prepare($sql);
+                                $searchParam = "%$search%";
+                                $stmt->bind_param("sss", $searchParam, $searchParam, $searchParam);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
                                 $rowcount = $result->num_rows;
                                 if($rowcount>0){
                                     $isSearch = true;
@@ -77,7 +101,7 @@
                                 }
                                 echo "</table>";                            
                             }
-
+                            // Ces corrections utilisent des requêtes préparées avec des paramètres pour éviter les injections SQL.
                             ?>
 
 
@@ -90,3 +114,4 @@
                 </div>
                 
                         <?php include_once('../../about.html'); ?>
+

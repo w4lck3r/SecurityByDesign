@@ -49,6 +49,14 @@ Stored Cross Site Scripting attacks happen when the application doesn’t valida
             $stmt->bindParam(":comment",$comment);
             $stmt->bindParam(":date",$today);
             $stmt->execute();
+            
+            $sql = "INSERT INTO comments (user, comment, date) VALUES (:user, :comment, :date)";
+            $stmt = $conn1->prepare($sql);
+            $stmt->bindParam(":user", $user);
+            $stmt->bindParam(":comment", $comment);
+            $stmt->bindParam(":date", $today);
+            $stmt->execute();
+
 
         }
 
@@ -58,9 +66,18 @@ Stored Cross Site Scripting attacks happen when the application doesn’t valida
             echo "<div class=\"row\">";
                 echo "<div class=\"col-md-12\">";
                 echo "<span class=\"glyphicon glyphicon-star\"></span> &nbsp;";
-                    echo ucfirst($rows[0]);
-                echo "<span class=\"pull-right\">".$rows[2]."</span>";
-                echo "<p>".$rows[1]."</p>";
+                echo ucfirst($rows[0]); // Ligne à modifier
+
+                echo htmlspecialchars(ucfirst($rows[0])); // Correction avec échappement
+
+                //Cela garantit que les données utilisateur affichées dans la page sont échappées, 
+                //ce qui réduit le risque d'exécution de scripts malveillants.
+
+
+                //echo "<span class=\"pull-right\">".$rows[2]."</span>";
+                echo "<span class=\"pull-right\">".htmlspecialchars($rows[2])."</span>";// Correction pour la vulnérabilité XSS
+                //echo "<p>".$rows[1]."</p>";
+                echo "<p>".htmlspecialchars($rows[1])."</p>"; // Correction pour la vulnérabilité XSS
                 echo "</div>";
                 echo "</div><hr>";
         } 

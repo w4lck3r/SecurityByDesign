@@ -5,7 +5,17 @@ $doc = new DOMDocument;
 $doc->load('coffee.xml');
 $xpath = new DOMXPath($doc);
 $input = $_POST['search'];
+//pour éviter l'injection XPath 
+// Avant correction
 $query = "/Coffees/Coffee[@ID='".$input."']";
+
+// Après correction
+$query = "/Coffees/Coffee[@ID='" . htmlspecialchars($input, ENT_QUOTES) . "']";
+
+//En utilisant htmlspecialchars avec l'option ENT_QUOTES,
+// vous vous assurez que les guillemets simples et doubles sont correctement échappés,
+// ce qui rend l'injection XPath plus difficile pour les attaquants.
+
 #$result = isset($xpath->query($query)) ? $xpath->query($query) : '';
 $result = $xpath->query($query);
 }

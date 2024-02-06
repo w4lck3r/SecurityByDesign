@@ -37,6 +37,23 @@
                     $image = "<img src=\"".$filename."\" width=\"100\" height=\"100\" />";
                 }
                 echo $image;
+
+                if(isset($_POST['img_url'])){
+                    $img_url = $_POST['img_url'];
+                    // Validate the URL to prevent SSRF attacks
+                    if(filter_var($img_url, FILTER_VALIDATE_URL)){
+                        // Generate a random and secure file name
+                        $filename = "../../img/" . bin2hex(random_bytes(8)) . "img1.jpg";
+                        // Download the image and save it to the server
+                        $remote_content = file_get_contents($img_url);
+                        file_put_contents($filename, $remote_content);
+                        echo $img_url . "<br>";
+                        $image = "<img src=\"" . $filename . "\" width=\"100\" height=\"100\" />";
+                    } else {
+                        echo "Invalid URL provided.";
+                    }
+                }
+                echo $image;
             
             ?>
         </p>

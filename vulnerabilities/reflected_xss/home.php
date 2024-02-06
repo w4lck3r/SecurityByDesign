@@ -23,14 +23,23 @@
             <form method='get' action=''>
                 <div class="form-group"> 
                     <label></label>
-                    <input class="form-control" width="50%" placeholder="Enter URL of Image" name="item"></input> <br>
+                    <!-- <input class="form-control" width="50%" placeholder="Enter URL of Image" name="item"></input> <br> -->
+
+                    <input class="form-control" width="50%" placeholder="Enter URL of Image" name="item" value="<?php echo htmlspecialchars($_GET['item'] ?? ''); ?>"></input> <br>
+
                     <div align="right"> <button class="btn btn-default" type="submit">Submit Button</button></div>
                </div> 
             </form>
             <?php
                 if (isset($_GET['item'])) {
-                    echo $_GET['item'];
+                    // echo $_GET['item'];
+
+                    echo htmlspecialchars($_GET['item'] ?? '');
+
                 }
+
+                //Ces corrections permettront d'échapper les caractères spéciaux dans les données
+                //entrées par l'utilisateur, réduisant ainsi le risque d'injection XSS réfléchie.
                 
             ?>
         </p>

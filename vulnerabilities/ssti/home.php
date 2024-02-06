@@ -34,26 +34,51 @@ Web application uses templates to make the web pages look more dynamic. Template
                </div> 
             </form>
             <?php
-                if (isset($_GET['submit'])) {
-                    $name=$_GET['name'];
-                    // include and register Twig auto-loader
-                    include 'vendor/twig/twig/lib/Twig/Autoloader.php';
-                    Twig_Autoloader::register();
-                    try {
-                          // specify where to look for templates
-                              $loader = new Twig_Loader_String();
+                //  if (isset($_GET['submit'])) {
+                //     $name=$_GET['name'];
+                //     // include and register Twig auto-loader
+                //     include 'vendor/twig/twig/lib/Twig/Autoloader.php';
+                //     Twig_Autoloader::register();
+                //     try {
+                //           // specify where to look for templates
+                //               $loader = new Twig_Loader_String();
   
-                          // initialize Twig environment
-                              $twig = new Twig_Environment($loader);
-                         // set template variables
-                         // render template
-                            $result= $twig->render($name);
+                //           // initialize Twig environment
+                //               $twig = new Twig_Environment($loader);
+                //          // set template variables
+                //          // render template
+                //             $result= $twig->render($name);
+                //             echo "Hello $result";
+  
+                //     } catch (Exception $e) {
+                //           die ('ERROR: ' . $e->getMessage());
+                //         }
+                //     }
+                    if (isset($_GET['submit'])) {
+                        $name = $_GET['name'];
+                        // include and register Twig auto-loader
+                        include 'vendor/twig/twig/lib/Twig/Autoloader.php';
+                        Twig_Autoloader::register();
+                        try {
+                            // specify where to look for templates
+                            $loader = new Twig_Loader_Array(array(
+                                'template' => 'Hello {{ name }}'
+                            ));
+                            // initialize Twig environment
+                            $twig = new Twig_Environment($loader);
+                            // set template variables
+                            // render template
+                            $result = $twig->render('template', array('name' => $name));
                             echo "Hello $result";
-  
-                    } catch (Exception $e) {
-                          die ('ERROR: ' . $e->getMessage());
+                        } catch (Exception $e) {
+                            die ('ERROR: ' . $e->getMessage());
                         }
                     }
+
+                    // j'ai utilisé Twig_Loader_Array pour charger un modèle à partir d'une chaîne au lieu de Twig_Loader_String.
+                    // Ensuite, j'ai passé l'entrée utilisateur $name en tant que données de modèle sécurisées en utilisant
+                    // un tableau associatif. Cela permet de prévenir les attaques SSTI en ne permettant pas l'exécution
+                    // de code arbitraire dans les modèles.
 
             ?>
         </p>
